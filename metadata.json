@@ -1,0 +1,5 @@
+{
+  "name": "StyleMirror AI",
+  "description": "An intelligent prompt and style-generation assistant that helps users recreate any reference image style using their own photo.",
+  "requestFramePermissions": []
+}
