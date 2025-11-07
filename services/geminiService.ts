@@ -1,7 +1,6 @@
-
 import { GoogleGenAI, Modality } from "@google/genai";
-import { StyleOption, StyleMirrorResponse } from '../types';
-import { STYLE_MIRROR_SYSTEM_PROMPT } from '../constants';
+import { StyleOption, StyleMirrorResponse, StyleAnalysisResponse } from '../types';
+import { STYLE_MIRROR_SYSTEM_PROMPT, STYLE_ANALYSIS_SYSTEM_PROMPT } from '../constants';
 
 const API_KEY = process.env.API_KEY;
 if (!API_KEY) {
@@ -25,6 +24,39 @@ function getMimeType(base64Data: string): string {
     if (base64Data.startsWith('iVBORw0KGgo=')) return 'image/png';
     if (base64Data.startsWith('UklGR')) return 'image/webp';
     return 'image/jpeg';
+}
+
+export async function analyzeReferenceStyle(
+  referenceImageBase64: string
+): Promise<StyleAnalysisResponse> {
+    const model = 'gemini-2.5-pro';
+    const referenceMimeType = getMimeType(referenceImageBase64);
+
+    const parts = [
+      { text: STYLE_ANALYSIS_SYSTEM_PROMPT },
+      { text: "--- IMAGE TO ANALYZE ---" },
+      fileToGenerativePart(referenceImageBase64, referenceMimeType),
+    ];
+
+    const response = await ai.models.generateContent({
+        model: model,
+        contents: [{ parts: parts }],
+        config: {
+            responseMimeType: "application/json",
+        }
+    });
+
+    try {
+        const jsonText = response.text.trim();
+        const parsedJson = JSON.parse(jsonText) as StyleAnalysisResponse;
+        if (parsedJson.recommended_options && !Array.isArray(parsedJson.recommended_options)) {
+            throw new Error("recommended_options is not an array");
+        }
+        return parsedJson;
+    } catch (e) {
+        console.error("Failed to parse JSON response for style analysis:", response.text, e);
+        throw new Error("The AI returned an invalid analysis format. Please try again.");
+    }
 }
 
 export async function generateStylePrompt(

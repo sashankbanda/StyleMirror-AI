@@ -1,7 +1,7 @@
 
 import React, { useCallback } from 'react';
 import { StyleOption } from '../types';
-import { STYLE_OPTIONS } from '../constants';
+import { STYLE_OPTIONS, STYLE_OPTION_DESCRIPTIONS } from '../constants';
 
 interface StyleOptionsProps {
   selectedOptions: StyleOption[];
@@ -37,6 +37,7 @@ const StyleOptionsComponent: React.FC<StyleOptionsProps> = ({ selectedOptions, o
           return (
             <label
               key={option}
+              title={STYLE_OPTION_DESCRIPTIONS[option]}
               className={`flex items-center space-x-2 p-3 rounded-lg border transition-all duration-200 cursor-pointer ${
                 isSelected
                   ? 'bg-violet-600/30 border-violet-500 text-violet-300'

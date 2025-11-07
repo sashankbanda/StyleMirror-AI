@@ -20,6 +20,13 @@ export interface StyleMirrorResponse {
   final_prompt?: string;
 }
 
+export interface StyleAnalysisResponse {
+  status: "success" | "error";
+  message?: string;
+  identified_style_summary?: string;
+  recommended_options?: StyleOption[];
+}
+
 export type AppStatus = 'idle' | 'analyzing' | 'generating' | 'success' | 'error';
 
 export type AppMode = 'single' | 'bulk';

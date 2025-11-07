@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 interface ImageComparatorProps {
@@ -16,16 +15,12 @@ const ImageComparator: React.FC<ImageComparatorProps> = ({ beforeImage, afterIma
         alt="Before"
         className="absolute top-0 left-0 w-full h-full object-cover"
       />
-      <div
-        className="absolute top-0 left-0 w-full h-full object-cover overflow-hidden"
+      <img
+        src={afterImage}
+        alt="After"
+        className="absolute top-0 left-0 w-full h-full object-cover"
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
-      >
-        <img
-          src={afterImage}
-          alt="After"
-          className="absolute top-0 left-0 w-full h-full object-cover"
-        />
-      </div>
+      />
       <div
         className="absolute top-0 bottom-0 bg-white w-1 cursor-ew-resize opacity-50 group-hover:opacity-100 transition-opacity"
         style={{ left: `calc(${sliderPosition}% - 2px)` }}
